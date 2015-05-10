@@ -1,0 +1,99 @@
+﻿RDF-(Resource Description Framework)资源描述框架
+
+
+Tips：
+·一种用来描述Web资源的的标记语言
+·RDF是一个处理 【元数据】 的XML（标准通用标记语言的子集）应用
+·元数据：例如书的内容是书的数据，而作者的名字、出版社的地址或版权信息就是书的元数据。数据和元数据的划分不是绝对的
+
+本章将介绍RDF的主要方面，包括它的概念，它的
+抽象的模型，它的语义，其语言结构，及其特点，结合
+充足的真实世界的例子
+
+RDF是不仅用于编码关于Web资源的元数据，也
+用于描述任何资源，他们的关系在现实世界中存在的
+
+·RDF is a language for representing information about resources in the World
+Wide Web (RDF Primer).RDF入门
+·RDF is a framework for representing information on the Web (RDF Concept).RDF概念
+·RDF is a general-purpose language for representing information in the Web (RDF
+Syntax, RDF Schema).RDF语法与概要
+·RDF is an assertional language intended to be used to express propositions using
+precise formal vocabularies, particularly those specified using RDFS, for access
+and use over the World Wide Web, and is intended to provide a basic foundation for more advanced assertional languages with a similar purpose (RDF
+Semantics).RDF语义
+
+
+RDF术语规则：
+·信息表示为语义列表，按主谓宾顺序不可改变。个人理解：主是source，谓是edge，宾是target-可以表示为RDF图
+·一种资源的名称必须是全球性的，应该由统一资源标识符（URI）。谓语也必须是全球性的并且被URI标识
+
+正常的URI + # +片段标识符。可以表示哈希URI
+
+
+http://www.liyangyu.com/camera/Nikon_D300斜线URI
+http://www.liyangyu.com/camera#Nikon_D300哈希URI
+
+
+
+Prefix  	Namespace
+myCamera 	http://www.liyangyu.com/camera#
+dbpedia 	http://www.dbpedia.org/resource/
+
+
+http://www.liyangyu.com/camera#Nikon_D300=myCamera:Nikon_D300
+
+http://www.dbpedia.org/resource/Nikon=dbpedia:Nikon
+
+
+于是：
+subject 		predicate	 		object
+myCamera:Nikon_D300     myCamera:is_a 			myCamera:DSLR
+myCamera:Nikon_D300 	myCamera:manufactured_by 	dbpedia:Nikon
+myCamera:Nikon_D300 	myCamera:performance 		myCamera:PictureQuality
+myCamera:Nikon_D300 	myCamera:model 			"D300"
+myCamera:Nikon_D300 	myCamera:weight 		"0.6 kg"
+myCamera:PictureQuality myCamera:evaluate 		"5 stars"
+
+
+RDF Triples: Knowledge That Machine Can Use
+
+
+
+
+// format my question
+question = new RDFStatement();
+question.subject = myCamera:Nikon_D300;
+question.predicate = myCamera:*;
+// read all the review statements and store them in statement
+array
+RDFStatement[] reviewStatements = new RDFStatement[6];
+reviewStatements[0].subject = myCamera:Nikon_D300;
+reviewStatements[0].predicate = myCamera:is_a;
+reviewStatements[0].object = myCamera:DSLR;
+reviewStatements[1].subject = myCamera:Nikon_D300;
+reviewStatements[1].predicate = myCamera:manufactured_by;
+reviewStatements[1].object = dbpedia:Nikon;
+reviewStatements[2].subject = myCamera:Nikon_D300;
+reviewStatements[2].predicate = myCamera:performance;
+reviewStatements[2].object = myCamera:PictureQuality;
+reviewStatements[3].subject = myCamera:Nikon_D300;
+reviewStatements[3].predicate = myCamera:model;
+reviewStatements[3].object = "D300";
+reviewStatements[4].subject = myCamera:Nikon_D300;
+reviewStatements[4].predicate = myCamera:weight;
+reviewStatements[4].object = "0.6 kg";
+reviewStatements[5].subject = myCamera:PictureQuality;
+reviewStatements[5].predicate = myCamera:evaluate;
+reviewStatements[5].object = "5 stars";
+// answer the question!
+foreach s in reviewStatements[] {
+if ( (s.subject==question.subject || question.subject==’∗’) &&
+(s.predicate==question.predicate || question.predicate ==
+’∗’) ) {
+System.out.println(s.predicate.toString());
+}
+};
+
+
+RDF重要概念：resource，statement (triple), subject, object, predicate, and RDF graph.
