@@ -1,0 +1,36 @@
+﻿部分引用自：http://blog.chinaunix.net/uid-7765861-id-2560688.html
+
+资源描述框架(Resource Description Framework, 简称 RDF)是一个用于表达关于万维网(World Wide Web)上的资源的信息的语言. 它专门用于表达关于Web资源的元数据, 比如Web页面的标题、作者和修改时间，Web文档的版权和许可信息，某个被共享资源的可用计划表等。然而，将“Web资源（Web resource）”这一概念一般化后，RDF可被用于表达关于任何可在Web上被标识的事物的信息，即使有时它们不能被直接从Web上获取。
+
+
+图：
+RDF基于这样的思想：用Web标识符（称作统一资源标识符，Uniform Resource Identifiers或URIs）来标识事物，用简单的属性（property）及属性值来描述资源。这使得RDF可以将一个或多个关于资源的简单陈述表示为一个由结点和弧组成的图（graph），其中的结点和弧代表资源、属性或属性值。画RDF图时，节点为URIrefs的用椭圆来表示，而节点为文字的则用方框来表示.
+
+
+三元组：
+RDF基于这种思想：被描述的事物具有一些属性（properties），而这些属性各有其值（values）；对资源的描述可以通过对它作出指定了上述属性及值的陈述（statement）来进行。RDF用一套特定的术语来表达陈述中的各个部分。确切地说，关于事物的陈述中用于识别事物的那部分就叫做主体subject ，而用于区分陈述对象主语的各个不同属性（譬如：作者，创建日期，语种等等）的那部分就叫做谓词predicate，陈述中用于区分各个属性的值的那部分叫做客体object
+eg：
+<http://www.example.org/index.html&gt;<http://purl.org/dc/elements/1.1/creator&gt;<http://www.example.org/staffid/85740&gt; .
+
+<http://www.example.org/index.html&gt; <http://www.example.org/terms/creation-date&gt; "August 16, 1999" .
+
+<http://www.example.org/index.html&gt; <http://purl.org/dc/elements/1.1/language&gt; "en" .
+
+
+完全的三元组表示法要求写出完整的URIref（括在尖刮号中）。简写法中， 一个不用尖刮号的XML限定名（QName）作为一个完整的URIref 的缩写形式 。（一个QName包括一个被赋为命名空间URI的前缀，其后是一个冒号，然后是个"局部名称"（local name）。由QName可以生成完整的URIref，即将局部名称添加到已经赋了命名空间URI的前缀。RDF 词汇表中的 URIrefs 都以 “http://www.w3.org/1999/02/22-rdf-syntax-ns# ”开头，其QName用前缀“rdf:”来表示。RDF词汇描述语言（rdfschema）定义了另一套都以http://www.w3.org/2000/01/rdf-schema# 开头的URIrefs的术语集合，其QName用前缀“rdfs:”来表示。
+
+基于XML的语法（称为RDF/XML）用于保存和交换RDF图的eg：
+有一个人由http://www.w3.org/People/EM/contact#me 标识, 他的名字是Eric Miller, 他的电子邮件地址是em@w3.org,他的头衔是Dr.”
+<?xml version="1.0"?>
+ <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:contact="http://www.w3.org/2000/10/swap/pim/contact#">
+  <contact:Person rdf:about="http://www.w3.org/People/EM/contact#me">
+     <contact:fullName>Eric Miller</contact:fullName>
+     <contact:mailbox rdf:resource="mailto:em@w3.org"/>
+     <contact:personalTitle>Dr.</contact:personalTitle> 
+   </contact:Person>
+ </rdf:RDF>
+
+一个RDF图可以这样书写RDF/XML：
+    * 所有空白结点（blank nodes）被指定空白结点标识符（blank node identifiers）。
+    * 依次列出各个结点，将它作为一个非嵌套的rdf:Description元素的主体（subject）。若该结点有URIref，则 rdf:Description元素使用rdf:about属性；若该结点是空结点，则rdf:Description元素使用 rdf:nodeID属性。
